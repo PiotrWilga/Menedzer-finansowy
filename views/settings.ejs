@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ustawienia konta</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <script>
+      function confirmAccountDeletion() {
+        return confirm('Czy na pewno chcesz usunąć swoje konto? Tego nie da się cofnąć!');
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('partials/navigation') %>
+
+    <main>
+      <div class="container">
+        <h1 class="heading">Ustawienia konta</h1>
+
+        <% if (errorMessage) { %>
+          <p class="error"><%= errorMessage %></p>
+        <% } %>
+
+        <% if (successMessage) { %>
+          <p class="success"><%= successMessage %></p>
+        <% } %>
+
+        <form action="/change-password" method="POST" class="section">
+          <label for="currentPassword">Obecne hasło:</label>
+          <input type="password" id="currentPassword" name="currentPassword" required>
+
+          <label for="newPassword">Nowe hasło:</label>
+          <input type="password" id="newPassword" name="newPassword" required>
+
+          <label for="confirmPassword">Potwierdź nowe hasło:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+          <button type="submit">Zmień hasło</button>
+        </form>
+
+        <section class="section">
+  <h2>Twoje kategorie</h2>
+  <form action="/categories/add" method="POST">
+    <input type="text" name="name" placeholder="Nowa kategoria" required />
+    <button type="submit">Dodaj</button>
+  </form>
+
+  <% if (categories.length > 0) { %>
+    <ul>
+      <% categories.forEach(category => { %>
+        <li>
+          <%= category.name %>
+          <form action="/categories/delete" method="POST" style="display:inline;">
+            <input type="hidden" name="id" value="<%= category._id %>" />
+            <button type="submit" class="danger">Usuń</button>
+          </form>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else { %>
+    <p>Brak kategorii.</p>
+  <% } %>
+</section>
+
+
+        <form action="/delete-account" method="POST" onsubmit="return confirmAccountDeletion();" class="section">
+          <button type="submit" class="danger">🗑️ Usuń konto</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

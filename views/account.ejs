@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title><%= headTitle %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+  <script>
+    // Zapobiega propagacji kliknięcia z przycisków do kliknięcia na całą linię
+    function stopPropagation(event) {
+      event.stopPropagation();
+    }
+  </script>
+</head>
+<body>
+  <%- include("partials/navigation") %>
+
+  <main class="container">
+    <h1><%= account.name %></h1>
+    <% if (account.description) { %>
+      <p><%= account.description %></p>
+    <% } %>
+
+    <a href="/transactions/new/<%= account._id %>">
+      <button>Dodaj transakcję</button>
+    </a>
+
+    <h2>Transakcje</h2>
+
+    <% if (transactions.length === 0) { %>
+      <p>Brak transakcji.</p>
+    <% } else { %>
+      <div class="account-list">
+        <% transactions.forEach(t => { %>
+          <div class="account-item" onclick="location.href='/transactions/<%= t._id %>'">
+            <div class="account-info">
+              <div><strong><%= t.date.toISOString().split("T")[0] %></strong></div>
+              <div><%= t.description %></div>
+
+              <% if (t.category && t.category.name) { %>
+                <div style="font-size: 14px; color: darkgreen;"><%= t.category.name %></div>
+              <% } %>
+
+              <% if (t.counterpart) { %>
+                <div style="font-size: 14px; color: gray;"><%= t.counterpart %></div>
+              <% } %>
+            </div>
+
+            <div class="account-balance <%= t.amount >= 0 ? 'balance-positive' : 'balance-negative' %>">
+              <%= t.amount.toFixed(2).replace('.', ',') %> zł
+            </div>
+
+            <div class="account-actions" style="display: flex; gap: 5px;">
+              <a href="/transactions/edit/<%= t._id %>" onclick="stopPropagation(event)">
+                <button class="edit-account" title="Edytuj transakcję">Edytuj</button>
+              </a>
+              <form action="/transactions/delete/<%= t._id %>" method="POST" onsubmit="stopPropagation(event)">
+                <input type="hidden" name="accountId" value="<%= account._id %>" />
+                <button type="submit" class="delete-account" title="Usuń transakcję">Usuń</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </main>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= headTitle %></title>
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+<body>
+  <%- include('partials/navigation') %>
+
+  <main class="container">
+    <h1>Rejestracja</h1>
+
+    <% if (errorMessage) { %>
+      <p style="color: red;"><%= errorMessage %></p>
+    <% } %>
+
+    <form method="POST" action="/register" class="section">
+      <label for="login">Login:</label>
+      <input type="text" id="login" name="login" required>
+
+      <label for="password">Hasło:</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">Utwórz konto</button>
+    </form>
+
+    <p style="text-align: center;">Masz już konto? <a href="/login">Zaloguj się</a></p>
+  </main>
+</body>
+</html>

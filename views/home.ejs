@@ -1,0 +1,76 @@
+<html>
+  <head>
+    <title><%= headTitle %></title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <script>
+      function confirmDelete(accountId, accountName) {
+        if (confirm(`Czy na pewno chcesz usunąć konto "${accountName}"? Ta operacja jest nieodwracalna.`)) {
+          // Tworzymy formularz POST do usunięcia konta
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = `/accounts/${accountId}/delete`;
+          document.body.appendChild(form);
+          form.submit();
+        }
+      }
+
+      // Zapobiegamy przejściu na konto klikając w przycisk "Usuń"
+      function stopPropagation(event) {
+        event.stopPropagation();
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('partials/navigation') %>
+
+    <main class="container">
+      <h1>Witaj, <%= user.login %>!</h1>
+
+      <% if (accounts.length === 0) { %>
+        <p>Nie masz jeszcze żadnych kont.</p>
+        <a href="/accounts/new">
+          <button>Utwórz konto</button>
+        </a>
+      <% } else { %>
+        <h2>Twoje konta</h2>
+
+        <div class="account-list">
+          <% accounts.forEach(account => { %>
+            <div class="account-item" onclick="location.href='/accounts/<%= account._id %>'">
+              <div class="account-info">
+                <a href="/accounts/<%= account._id %>" class="account-name" onclick="event.stopPropagation()">
+                  <%= account.name %>
+                </a>
+                <% if (account.description) { %>
+                  <div class="account-description"><%= account.description %></div>
+                <% } %>
+              </div>
+
+              <div class="account-balance <%= account.balance >= 0 ? 'balance-positive' : 'balance-negative' %>">
+                <%= account.balance.toFixed(2).replace('.', ',') %> zł
+              </div>
+
+              <div class="account-actions">
+                
+              <a href="/accounts/<%= account._id %>/edit" onclick="event.stopPropagation()">
+                <button class="edit-account" title="Edytuj konto">Edytuj</button>
+                </a>
+                <button 
+                class="delete-account" 
+                onclick="stopPropagation(event); confirmDelete('<%= account._id %>', '<%= account.name %>')" 
+                title="Usuń konto"
+                >
+                Usuń
+              </button>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+        <a href="/accounts/new">
+          <button>Dodaj kolejne konto</button>
+        </a>
+      <% } %>
+    </main>
+  </body>
+</html>

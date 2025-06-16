@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title><%= headTitle %></title>
+    <link rel="stylesheet" href="/css/main.css" />
+  </head>
+  <body>
+    <%- include('partials/navigation') %>
+
+    <main class="container">
+      <h1><%= isEditMode ? 'Edytuj konto' : 'Nowe konto' %></h1>
+
+      <% if (errorMessage) { %>
+        <p style="color: red;"><%= errorMessage %></p>
+      <% } %>
+
+      <form action="<%= formAction %>" method="POST">
+        <div>
+          <label for="name">Nazwa konta:</label><br />
+          <input type="text" id="name" name="name" required value="<%= account.name || '' %>" />
+        </div>
+
+        <div>
+          <label for="description">Opis (opcjonalnie):</label><br />
+          <textarea id="description" name="description"><%= account.description || '' %></textarea>
+        </div>
+
+        <button type="submit"><%= isEditMode ? 'Zapisz zmiany' : 'Utwórz' %></button>
+      </form>
+
+      <a href="/"><button>Anuluj</button></a>
+    </main>
+  </body>
+</html>

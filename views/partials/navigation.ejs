@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div class="navbar-left">
+    <a href="/">Strona główna</a>
+  </div>
+  <div class="navbar-right">
+    <% if (user) { %>
+      <div class="dropdown">
+        <button class="dropbtn"><%= user.login %> ▼</button>
+        <div class="dropdown-content">
+          <a href="/settings">Ustawienia konta</a>
+          <a href="/logout">Wyloguj</a>
+        </div>
+      </div>
+    <% } else { %>
+      <a href="/login">Zaloguj</a>
+      <a href="/register">Rejestracja</a>
+    <% } %>
+  </div>
+</nav>
