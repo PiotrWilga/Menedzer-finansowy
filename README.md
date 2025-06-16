@@ -19,18 +19,21 @@ To prosta aplikacja webowa, która umożliwia użytkownikowi tworzenie i zarząd
 
 1. **Edytuj plik `.env`** w katalogu głównym, by podać URI do bazy danych :
 
-   ```env
+   ```
+   env
    MONGODB_URI=mongodb+srv://<login>:<haslo>@<klaster>.mongodb.net/<nazwa_bazy>
    ```
 
 2. **Zainstaluj zależności:**
 
-   ```npm install
+   ```
+   npm install
    ```
 
 3. **Uruchom aplikację:**
 
-   ```npm start
+   ```
+   npm start
    ```
 
 4. Otwórz przeglądarkę i wejdź na: `http://localhost:3000`
